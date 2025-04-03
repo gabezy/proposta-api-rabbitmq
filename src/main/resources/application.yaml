@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: proposta-api
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/proposta
+#    password: secret
+#    username: myuser
+  docker:
+    compose:
+      enabled: true
+      file: src/main/resources/compose.yaml
