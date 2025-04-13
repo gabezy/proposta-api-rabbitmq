@@ -9,3 +9,6 @@ spring:
     compose:
       enabled: true
       file: src/main/resources/compose.yaml
+logging:
+  level:
+    org.springframework.jdbc: DEBUG
