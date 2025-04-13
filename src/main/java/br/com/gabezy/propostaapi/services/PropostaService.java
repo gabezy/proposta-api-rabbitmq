@@ -9,6 +9,8 @@ import br.com.gabezy.propostaapi.repositories.PropostaRepository;
 import br.com.gabezy.propostaapi.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -19,15 +21,22 @@ public class PropostaService {
 
     private final PropostaRepository propostaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final NotificaoService notificaoService;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public PropostaResponseDTO save(final PropostaRequestDTO request)  {
         Usuario usuario = usuarioRepository.findByCpf(request.cpf())
                 .orElseGet(() -> usuarioRepository.save(new Usuario(request)));
 
         Proposta proposta = propostaRepository.save(new Proposta(request, usuario.id()));
 
-        return convertToResponse(proposta, usuario);
+        PropostaResponseDTO propostaResponse = convertToResponse(proposta, usuario);
+
+        notificaoService.notificarPropostaPendente(propostaResponse);
+
+        return propostaResponse;
     }
+
     public List<PropostaResponseDTO> obterPropostas() {
         return propostaRepository.findAllPropostaDadosView().stream()
                 .map(this::convertDadosViewToResponseDTO)
