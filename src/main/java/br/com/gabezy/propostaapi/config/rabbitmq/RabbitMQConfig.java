@@ -1,7 +1,6 @@
 package br.com.gabezy.propostaapi.config.rabbitmq;
 
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -23,7 +22,7 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue createQueuePropostaConcluidaMsPrpoposta() {
+    public Queue createQueuePropostaConcluidaMsProposta() {
         return QueueBuilder.durable("proposta-concluida.ms-proposta").build();
     }
 
@@ -41,6 +40,23 @@ public class RabbitMQConfig {
     public ApplicationListener<ApplicationReadyEvent> initializeAdmin(RabbitAdmin rabbitAdmin) {
         // This will initialize the RabbitMQ admin and create the queues if they do not exist
         return event -> rabbitAdmin.initialize();
+    }
+
+    @Bean
+    public FanoutExchange fanoutExchangePropostaPendente() {
+        return ExchangeBuilder.fanoutExchange("proposta-pendente.ex").durable(true).build();
+    }
+
+    @Bean
+    public Binding bindingPropostaPendenteMsAnaliseCredito() {
+        return BindingBuilder.bind(createQueuePropostaPendenteMsAnaliseCredito())
+                .to(fanoutExchangePropostaPendente());
+    }
+
+    @Bean
+    public Binding bindingPropostaPendenteMsNotificao() {
+        return BindingBuilder.bind(createQueuePropostaPendenteMsNotificao())
+                .to(fanoutExchangePropostaPendente());
     }
 
 }
