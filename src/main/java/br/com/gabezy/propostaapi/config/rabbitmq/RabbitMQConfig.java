@@ -1,5 +1,7 @@
 package br.com.gabezy.propostaapi.config.rabbitmq;
 
+import br.com.gabezy.propostaapi.config.properties.PropostaApiProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -11,26 +13,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@RequiredArgsConstructor
 public class RabbitMQConfig {
+
+    private final PropostaApiProperties properties;
 
     @Bean
     public Queue createQueuePropostaPendenteMsAnaliseCredito() {
-        return QueueBuilder.durable("proposta-pendente.ms-analise-credito").build();
+        return QueueBuilder.durable(properties.getQueueName().getPropostaPendenteAnaliseCredito()).build();
     }
 
     @Bean
     public Queue createQueuePropostaPendenteMsNotificao() {
-        return QueueBuilder.durable("proposta-pendente.ms-notificao").build();
+        return QueueBuilder.durable(properties.getQueueName().getPropostaPendenteNotificacao()).build();
     }
 
     @Bean
     public Queue createQueuePropostaConcluidaMsProposta() {
-        return QueueBuilder.durable("proposta-concluida.ms-proposta").build();
+        return QueueBuilder.durable(properties.getQueueName().getPropostaConcluidaProposta()).build();
     }
 
     @Bean
     public Queue createQueuePropostaConcluidaMsNotificao() {
-        return QueueBuilder.durable("proposta-concluida.ms-notificao").build();
+        return QueueBuilder.durable(properties.getQueueName().getPropostaConcluidaNotificacao()).build();
     }
 
     @Bean
@@ -46,7 +51,7 @@ public class RabbitMQConfig {
 
     @Bean
     public FanoutExchange fanoutExchangePropostaPendente() {
-        return ExchangeBuilder.fanoutExchange("proposta-pendente.ex").durable(true).build();
+        return ExchangeBuilder.fanoutExchange(properties.getExchangeName().getPropostaPendente()).durable(true).build();
     }
 
     @Bean

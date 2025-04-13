@@ -1,3 +1,13 @@
+proposta-api:
+  exchange-name:
+    proposta-pendente: 'proposta-pendente.ex'
+  queue-name:
+    proposta-pendente-analise-credito: 'proposta-pendente.ms-analise-credito'
+    proposta-pendente-notificacao: 'proposta-pendente.ms-notificacao'
+    proposta-concluida-proposta: 'proposta-concluida.ms-proposta'
+    proposta-concluida-notificacao: 'proposta-concluida.ms-notificacao'
+
+---
 spring:
   application:
     name: proposta-api
@@ -14,6 +24,7 @@ spring:
     compose:
       enabled: true
       file: src/main/resources/compose.yaml
+---
 logging:
   level:
     org.springframework.jdbc: DEBUG
