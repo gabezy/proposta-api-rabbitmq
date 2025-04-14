@@ -30,11 +30,17 @@ public class PropostaService {
 
         Proposta proposta = propostaRepository.save(new Proposta(request, usuario.id()));
 
-        PropostaResponseDTO propostaResponse = convertToResponse(proposta, usuario);
+        notificarPropostaRabbitMq(proposta);
 
-        notificaoService.notificarPropostaPendente(propostaResponse);
+        return convertToResponse(proposta, usuario);
+    }
 
-        return propostaResponse;
+    private void notificarPropostaRabbitMq(Proposta proposta) {
+        try {
+            notificaoService.notificarPropostaPendente(proposta);
+        } catch (RuntimeException e) {
+            propostaRepository.updateIntegradoById(false, proposta.id());
+        }
     }
 
     public List<PropostaResponseDTO> obterPropostas() {
