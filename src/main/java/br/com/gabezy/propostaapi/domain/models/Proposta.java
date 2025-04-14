@@ -26,12 +26,11 @@ public record Proposta(
     @Column
     String observacao,
 
-     Long usuarioId
-
+    Long usuarioId
 ) {
 
     public Proposta(PropostaRequestDTO dto, Long usuarioId) {
-        this(null, dto.valorSolicitado(), dto.prazoPagamento(), null, false, null, usuarioId);
+        this(null, dto.valorSolicitado(), dto.prazoPagamento(), null, true, null, usuarioId);
     }
 
 }
