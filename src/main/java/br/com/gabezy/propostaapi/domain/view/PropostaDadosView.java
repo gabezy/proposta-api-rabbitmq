@@ -15,10 +15,14 @@ public record PropostaDadosView(
 
         double valorSolicitado,
 
+        boolean integrada,
+
         int prazo,
 
         Boolean aprovada,
 
-        String observacao
+        String observacao,
+
+        Long usuarioId
 ) {
 }

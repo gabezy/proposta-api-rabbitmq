@@ -1,5 +1,6 @@
 package br.com.gabezy.propostaapi.services;
 
+import br.com.gabezy.propostaapi.domain.dtos.PropostaMessageDTO;
 import br.com.gabezy.propostaapi.domain.dtos.PropostaRequestDTO;
 import br.com.gabezy.propostaapi.domain.dtos.PropostaResponseDTO;
 import br.com.gabezy.propostaapi.domain.models.Proposta;
@@ -30,16 +31,16 @@ public class PropostaService {
 
         Proposta proposta = propostaRepository.save(new Proposta(request, usuario.id()));
 
-        notificarPropostaRabbitMq(proposta);
+        notificarPropostaRabbitMq(new PropostaMessageDTO(proposta, usuario));
 
         return convertToResponse(proposta, usuario);
     }
 
-    private void notificarPropostaRabbitMq(Proposta proposta) {
+    private void notificarPropostaRabbitMq(PropostaMessageDTO propostaMessage) {
         try {
-            notificaoService.notificarPropostaPendente(proposta);
+            notificaoService.notificarPropostaPendente(propostaMessage);
         } catch (RuntimeException e) {
-            propostaRepository.updateIntegradoById(false, proposta.id());
+            propostaRepository.updateIntegradoById(false, propostaMessage.id());
         }
     }
 

@@ -14,10 +14,10 @@ import java.util.List;
 @Repository
 public interface PropostaRepository extends ListCrudRepository<Proposta, Long> {
 
-    @Query("SELECT p.id, u.nome, u.sobrenome, u.telefone, u.cpf, u.renda, p.valor_solicitado," +
-            " p.prazo, p.aprovada, p.observacao " +
-            "FROM proposta p " +
-            "JOIN usuario u ON p.usuario_id = u.id")
+    @Query("SELECT p.id, u.nome, u.sobrenome, u.telefone, u.cpf, u.renda, p.valor_solicitado, p.integrado as integrada," +
+            " p.prazo, p.aprovada, p.observacao, u.id as usuarioId " +
+            " FROM proposta p " +
+            " JOIN usuario u ON p.usuario_id = u.id")
     List<PropostaDadosView> findAllPropostaDadosView();
 
     @Modifying
@@ -25,6 +25,11 @@ public interface PropostaRepository extends ListCrudRepository<Proposta, Long> {
     @Query("UPDATE proposta SET integrado = :integrado WHERE id = :id")
     void updateIntegradoById(@Param("integrado") boolean integrado, @Param("id") Long id);
 
-    List<Proposta> findAllByIntegradoIsFalse();
+    @Query("SELECT p.id, u.nome, u.sobrenome, u.telefone, u.cpf, u.renda, p.valor_solicitado, p.integrado as integrada," +
+            " p.prazo, p.aprovada, p.observacao, u.id as usuarioId " +
+            " FROM proposta p " +
+            " JOIN usuario u ON p.usuario_id = u.id " +
+            " WHERE p.integrado = false")
+    List<PropostaDadosView> findAllPropostaDadosViewByIntegradoIsFalse();
 
 }
