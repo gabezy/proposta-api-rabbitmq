@@ -55,6 +55,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public FanoutExchange fanoutExchangePropostaConcluida() {
+        return ExchangeBuilder.fanoutExchange(properties.getExchangeName().getPropostaConcluida()).durable(true).build();
+    }
+
+    @Bean
     public Binding bindingPropostaPendenteMsAnaliseCredito() {
         return BindingBuilder.bind(createQueuePropostaPendenteMsAnaliseCredito())
                 .to(fanoutExchangePropostaPendente());
@@ -64,6 +69,18 @@ public class RabbitMQConfig {
     public Binding bindingPropostaPendenteMsNotificao() {
         return BindingBuilder.bind(createQueuePropostaPendenteMsNotificao())
                 .to(fanoutExchangePropostaPendente());
+    }
+
+    @Bean
+    public Binding bindingPropostaConcluidaMsProposta() {
+        return BindingBuilder.bind(createQueuePropostaConcluidaMsProposta())
+                .to(fanoutExchangePropostaConcluida());
+    }
+
+    @Bean
+    public  Binding bindingPropostaConcluidaMsNotificao() {
+        return BindingBuilder.bind(createQueuePropostaConcluidaMsNotificao())
+                .to(fanoutExchangePropostaConcluida());
     }
 
     @Bean

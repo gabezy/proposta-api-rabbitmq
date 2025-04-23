@@ -1,6 +1,7 @@
 proposta-api:
   exchange-name:
     proposta-pendente: 'proposta-pendente.ex'
+    proposta-concluida: 'proposta-concluida.ex'
   queue-name:
     proposta-pendente-analise-credito: 'proposta-pendente.ms-analise-credito'
     proposta-pendente-notificacao: 'proposta-pendente.ms-notificacao'

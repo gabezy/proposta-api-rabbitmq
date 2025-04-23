@@ -16,6 +16,7 @@ public class PropostaApiProperties {
     @Setter
     public static class ExchangeName {
         private String propostaPendente;
+        private String propostaConcluida;
     }
 
     @Getter
