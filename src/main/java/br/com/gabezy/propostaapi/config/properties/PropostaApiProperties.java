@@ -17,6 +17,7 @@ public class PropostaApiProperties {
     public static class ExchangeName {
         private String propostaPendente;
         private String propostaConcluida;
+        private String propostaPendenteDeadLetter;
     }
 
     @Getter
@@ -26,6 +27,7 @@ public class PropostaApiProperties {
         private String propostaPendenteNotificacao;
         private String propostaConcluidaProposta;
         private String propostaConcluidaNotificacao;
+        private String propostaPendenteDeadLetter;
     }
 
 }

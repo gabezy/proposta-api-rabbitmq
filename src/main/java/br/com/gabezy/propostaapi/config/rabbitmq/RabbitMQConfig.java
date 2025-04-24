@@ -20,7 +20,9 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue createQueuePropostaPendenteMsAnaliseCredito() {
-        return QueueBuilder.durable(properties.getQueueName().getPropostaPendenteAnaliseCredito()).build();
+        return QueueBuilder.durable(properties.getQueueName().getPropostaPendenteAnaliseCredito())
+                .deadLetterExchange(properties.getExchangeName().getPropostaPendenteDeadLetter())
+                .build();
     }
 
     @Bean
@@ -36,6 +38,11 @@ public class RabbitMQConfig {
     @Bean
     public Queue createQueuePropostaConcluidaMsNotificao() {
         return QueueBuilder.durable(properties.getQueueName().getPropostaConcluidaNotificacao()).build();
+    }
+
+    @Bean
+    public Queue createaQueuePropostaPendenteDeadLetter() {
+        return QueueBuilder.durable(properties.getQueueName().getPropostaPendenteDeadLetter()).build();
     }
 
     @Bean
@@ -60,6 +67,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public FanoutExchange deadLetterExchangeFanout() {
+        return ExchangeBuilder.fanoutExchange(properties.getExchangeName().getPropostaPendenteDeadLetter()).durable(true).build();
+    }
+
+    @Bean
     public Binding bindingPropostaPendenteMsAnaliseCredito() {
         return BindingBuilder.bind(createQueuePropostaPendenteMsAnaliseCredito())
                 .to(fanoutExchangePropostaPendente());
@@ -78,9 +90,15 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public  Binding bindingPropostaConcluidaMsNotificao() {
+    public Binding bindingPropostaConcluidaMsNotificao() {
         return BindingBuilder.bind(createQueuePropostaConcluidaMsNotificao())
                 .to(fanoutExchangePropostaConcluida());
+    }
+
+    @Bean
+    public Binding bindingPropostaPendenteDeadLetter() {
+        return BindingBuilder.bind(createaQueuePropostaPendenteDeadLetter())
+                .to(deadLetterExchangeFanout());
     }
 
     @Bean

@@ -2,11 +2,13 @@ proposta-api:
   exchange-name:
     proposta-pendente: 'proposta-pendente.ex'
     proposta-concluida: 'proposta-concluida.ex'
+    proposta-pendente-dead-letter: 'proposta-pendente-dlx.ex'
   queue-name:
     proposta-pendente-analise-credito: 'proposta-pendente.ms-analise-credito'
     proposta-pendente-notificacao: 'proposta-pendente.ms-notificacao'
     proposta-concluida-proposta: 'proposta-concluida.ms-proposta'
     proposta-concluida-notificacao: 'proposta-concluida.ms-notificacao'
+    proposta-pendente-dead-letter: 'proposta-pendente.dlq'
 
 ---
 spring:
