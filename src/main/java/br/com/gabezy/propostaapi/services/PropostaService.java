@@ -8,12 +8,12 @@ import br.com.gabezy.propostaapi.domain.models.Usuario;
 import br.com.gabezy.propostaapi.domain.view.PropostaDadosView;
 import br.com.gabezy.propostaapi.repositories.PropostaRepository;
 import br.com.gabezy.propostaapi.repositories.UsuarioRepository;
+import br.com.gabezy.propostaapi.utils.FormatterValorUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 @Service
@@ -58,7 +58,7 @@ public class PropostaService {
                 usuario.telefone(),
                 usuario.cpf(),
                 usuario.renda(),
-                formatarValorSolicitado(proposta.valorSolicitado()),
+                FormatterValorUtils.formatarValorParaBRL(proposta.valorSolicitado()),
                 proposta.prazo(),
                 proposta.aprovada(),
                 proposta.observacao());
@@ -72,14 +72,11 @@ public class PropostaService {
                 view.telefone(),
                 view.cpf(),
                 view.renda(),
-                formatarValorSolicitado(view.valorSolicitado()),
+                FormatterValorUtils.formatarValorParaBRL(view.valorSolicitado()),
                 view.prazo(),
                 view.aprovada(),
                 view.observacao());
     }
 
-    private String formatarValorSolicitado(Double valorSolicitado) {
-        return NumberFormat.getCurrencyInstance().format(valorSolicitado);
-    }
 
 }

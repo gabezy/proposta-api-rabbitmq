@@ -20,9 +20,9 @@ public interface PropostaRepository extends ListCrudRepository<Proposta, Long> {
             " JOIN usuario u ON p.usuario_id = u.id")
     List<PropostaDadosView> findAllPropostaDadosView();
 
+    @Query("UPDATE proposta SET integrado = :integrado WHERE id = :id")
     @Modifying
     @Transactional
-    @Query("UPDATE proposta SET integrado = :integrado WHERE id = :id")
     void updateIntegradoById(@Param("integrado") boolean integrado, @Param("id") Long id);
 
     @Query("SELECT p.id, u.nome, u.sobrenome, u.telefone, u.cpf, u.renda, p.valor_solicitado, p.integrado as integrada," +
@@ -31,5 +31,10 @@ public interface PropostaRepository extends ListCrudRepository<Proposta, Long> {
             " JOIN usuario u ON p.usuario_id = u.id " +
             " WHERE p.integrado = false")
     List<PropostaDadosView> findAllPropostaDadosViewByIntegradoIsFalse();
+
+    @Query("UPDATE proposta SET aprovada = :aprovada, observacao = :observacao WHERE id = :id")
+    @Modifying
+    @Transactional
+    void atualizarPropostaAnalisada(Long id, boolean aprovada, String observacao);
 
 }

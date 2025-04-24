@@ -6,11 +6,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 import java.util.Locale;
 
 @EnableScheduling
 @SpringBootApplication
+@EnableWebSocketMessageBroker
 @EnableConfigurationProperties({PropostaApiProperties.class})
 public class PropostaApiApplication {
 
